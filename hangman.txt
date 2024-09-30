@@ -1,0 +1,44 @@
+import random
+
+def get_word(words):
+    """Selects a random word from the given list."""
+    return random.choice(words)
+
+def display_word(word, guessed_letters):
+    """Displays the word with guessed letters filled in."""
+    result = []
+    for letter in word:
+        if letter in guessed_letters:
+            result.append(letter)
+        else:
+            result.append("_")
+    return " ".join(result)
+
+def play_hangman():
+    """Main game loop."""
+    words = ["apple", "banana", "orange", "grape", "pear", "kiwi", "mango", "codeAlpha", "blueberry", "raspberry"]
+    word = get_word(words)
+    guessed_letters = set()
+    attempts = 6
+
+    while attempts > 0:
+        print(display_word(word, guessed_letters))
+        print(f"Attempts left: {attempts}")
+
+        guess = input("Guess a letter: ").lower()
+        if guess in guessed_letters:
+            print("You already guessed that letter.")
+        elif guess in word:
+            guessed_letters.add(guess)
+            if all(letter in guessed_letters for letter in word):
+                print("Congratulations! You won.")
+                return
+        else:
+            guessed_letters.add(guess)
+            attempts -= 1
+            if attempts == 0:
+                print("Game over! The word was:", word)
+                return
+
+if __name__ == "__main__":
+    play_hangman()
